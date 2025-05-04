@@ -1,0 +1,46 @@
+@page "/metadata"
+@using MudblazorWeather.Graphs.Temperature;
+@using MudblazorWeather.Graphs.Pressure;
+@using MudblazorWeather.Graphs.Humidity
+@using MudblazorWeather.Graphs.Light;
+@using MudblazorWeather.Graphs.SignalStrength
+@using MudblazorWeather.Graphs.BatteryVolage
+@using MudblazorWeather.UI_Components;
+
+<html>
+
+    <head>
+        <title>
+            Metadata graphs
+        </title>
+    </head>
+
+    <body>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <Heatmap_metadata></Heatmap_metadata>
+            <div id="chartSignalStrength" style="height: 100%; width: 95%;">
+                <canvas id="chartCanvasSignalStrength" height="100"></canvas>
+                <div style="opacity:0;" class="chartTooltip center"></div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <ColumnChart_battery_voltage></ColumnChart_battery_voltage>
+            <div id="chartBatteryVoltage" style="height: 100%; width: 95%;">
+                <canvas id="chartCanvasBatteryVoltage" height="100"></canvas>
+                <div style="opacity:0;" class="chartTooltip center"></div>
+            </div>
+        </div>
+
+    </div>
+    
+    
+    
+    </body>
+
+</html>
+
+
+

@@ -1,0 +1,17 @@
+@inject IDialogService DialogService
+@using MudblazorWeather
+
+
+<MudContainer>
+    <MudIconButton Icon="@Icons.Material.Filled.Settings" Size="Size.Medium" @onclick="OpenDialog" Variant="Variant.Filled" Color="MudBlazor.Color.Primary" Class="ma-2"/>
+</MudContainer>
+
+@code {
+    
+    private void OpenDialog()
+    {
+        var options = new DialogOptions {};
+        DialogService.Show<Dialog>("Settings Menu", options);
+    }
+
+}

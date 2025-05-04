@@ -1,0 +1,33 @@
+@using MudblazorWeather.Backend.DataHandling
+@using MudblazorWeather.Backend.Networking
+<MudDialog>
+    <DialogContent>
+        <MudSlider Min="@(20)" Max="@(60)" Step="@(2)" @bind-Value="@value">Resolution: @value.ToString()</MudSlider>
+    </DialogContent>
+    
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    bool disable = false;
+
+    int value = CachedData.Instance.requiredDatapointCount;
+
+    async void Submit()
+    {
+        MudDialog.Close(DialogResult.Ok(true));
+        CachedData.Instance.requiredDatapointCount = value;
+        await ValueSet();
+    }
+
+    async Task ValueSet()
+    {
+        disable = true;
+        await HttpHandler.RequestData(CachedData.Instance.From, CachedData.Instance.To);
+        disable = false;
+    }
+}

@@ -1,0 +1,34 @@
+@inject IJSRuntime _jsRuntime
+@using MudblazorWeather.Backend.DataHandling
+@using System.Security.Cryptography
+@using Microsoft.JSInterop
+@using System.Security
+
+@code {
+    public static  List<CustomChartSeries> Series = new List<CustomChartSeries>();
+    string gTitle = "Temperature";
+    
+    protected override async Task OnInitializedAsync()
+    {
+        CachedData.Instance.OnNewDataReceivedEvent += SetDataAndRender;
+        CachedData.Instance.OnRefreshRequiredEvent += SetDataAndRender;
+
+        Series = await CachedData.Instance.GetChartSeries(DataType.Temperature);
+    }
+
+    private async void SetDataAndRender()
+    {
+        Series = await CachedData.Instance.GetChartSeries(DataType.Temperature);
+        await _jsRuntime.InvokeVoidAsync("updateLineChart", gTitle, Series);
+        this.StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await _jsRuntime.InvokeVoidAsync("generateLineChart", gTitle, Series);
+            this.StateHasChanged();
+        }
+    }
+}

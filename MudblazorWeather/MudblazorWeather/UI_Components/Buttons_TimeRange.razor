@@ -1,0 +1,64 @@
+@using MudblazorWeather.Backend.Networking
+
+<MudButtonGroup Color="MudBlazor.Color.Primary" Variant="Variant.Outlined" VerticalAlign="false">
+    <MudButton Disabled="@processingOne" OnClick="LoadOneDay">
+        @if (processingOne)
+        {
+            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+        }
+        else
+        {
+            <MudText>1 Day</MudText>
+        }
+    </MudButton>
+    
+    <MudButton Disabled="@processingTwo" OnClick="LoadThreeDays">
+        @if (processingTwo)
+        {
+            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+        }
+        else
+        {
+            <MudText>3 Days</MudText>
+        }
+    </MudButton>
+    
+    <MudButton Disabled="@processingThree" OnClick="LoadSevenDays">
+        @if (processingThree)
+        {
+            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+        }
+        else
+        {
+            <MudText>7 Days</MudText>
+        }
+    </MudButton>
+</MudButtonGroup>
+
+@code
+{
+    private bool processingOne = false;
+    private bool processingTwo = false;
+    private bool processingThree = false;
+    
+    async Task LoadOneDay()
+    {
+        processingOne = true;
+        await HttpHandler.RequestData(TimeSpan.FromDays(1));
+        processingOne = false;
+    }
+    
+    async Task LoadThreeDays()
+    {
+        processingTwo = true;
+        await HttpHandler.RequestData(TimeSpan.FromDays(3));
+        processingTwo = false;
+    }
+    
+    async Task LoadSevenDays()
+    {
+        processingThree = true;
+        await HttpHandler.RequestData(TimeSpan.FromDays(7));
+        processingThree = false;
+    }
+}

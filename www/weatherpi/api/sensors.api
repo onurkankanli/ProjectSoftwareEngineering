@@ -1,0 +1,39 @@
+#!/bin/env python
+
+import cgi
+from datetime import datetime
+import json
+
+from sql_getter import Sql_getter
+
+
+DB_PATH = '../../../database/weather_data.db'
+def date_parse(date):
+    return '-'.join(date.split('_')[0].split('-')) + ' ' +  date.split('_')[1]
+
+def func():
+    arguments = cgi.parse()
+    arguments = json.dumps(arguments)
+    arguments = json.loads(arguments)
+    sql_getter = Sql_getter(DB_PATH)
+    start_date = date_parse(arguments['from'][0])
+    end_date = date_parse(arguments['to'][0])
+    data_points = int(arguments['data_points'][0])
+    data = sql_getter.get_data(start_date, end_date, arguments['type'][0], data_points)
+    # start_date = date_parse('2022-01-08_11:00:00')
+    # end_date = date_parse('2022-01-09_11:00:00')
+    # data_points = 40
+    # print(start_date)
+    # print(end_date)
+    # data = sql_getter.get_data(start_date, end_date, 'All', data_points)
+    return data
+    
+
+if __name__ == '__main__':
+
+    print('Content-type: application/json')
+    print('Access-Control-Allow-Origin: *')
+    print()
+    # print(datetime.now())
+    print(func())
+    # print(datetime.now())

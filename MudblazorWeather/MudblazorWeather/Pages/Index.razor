@@ -1,0 +1,95 @@
+﻿@using MudblazorWeather.Graphs.Temperature;
+@using MudblazorWeather.Graphs.Pressure;
+@using MudblazorWeather.Graphs.Humidity
+@using MudblazorWeather.Graphs.Light;
+@using MudblazorWeather.UI_Components;
+@using System.ComponentModel
+@page "/"
+
+@*
+   * Using bootstrap columns and rows for positioning and autoscaling razor components.
+   * 12 column grid system
+*@
+
+<html>
+   <head>
+      <title>Weather Station</title>
+      
+   </head>
+
+<body>
+   
+   <div class="container-fluid" style="z-index : -1">
+      <div class="row">
+         <div class="col-md-6"></div>
+         <div class="col-md-5"></div>
+         <div class="col-md-1">
+            <Settings></Settings>
+         </div>
+      </div>
+
+      <div class="row">
+         <div class="col-md-1 col align-self-center">
+            
+      </div>
+         
+       <div class="col-md-5 ">
+          <div class="row">
+             <LineChart_temp></LineChart_temp>
+             <div id="chartTemperature" style="height: 100%; min-height:200px; width: 100%;">
+                @*<canvas id="chartCanvasTemperature" height="100"></canvas>
+                <div style="opacity:0;" class="chartTooltip center"></div>*@
+             </div>
+
+          </div>
+            <div class="row">
+               <LineChart_pressure></LineChart_pressure>
+               <div id="chartPressure" style="height: 100%; min-height:200px; width: 100%;">
+                  @*<canvas id="chartCanvas" height="100"></canvas>
+                  <div style="opacity:0;" class="chartTooltip center"></div>*@
+               </div>
+               
+            </div>
+         </div>
+
+         <div class="col-md-5 ">
+            <div class="row">
+              <LineChart_light></LineChart_light>
+               <div id="chartLight" style="height: 100%; min-height:200px; width: 100%;">
+                  @*<canvas id="chartCanvasLight" height="100"></canvas>
+                  <div style="opacity:0;" class="chartTooltip center"></div>*@
+               </div>
+               
+            </div>
+
+            <div class="row">
+               <LineChart_humidity></LineChart_humidity>
+               <div id="chartHumidity" style="height: 100%; min-height:200px; width: 100%;">
+                  @*<canvas id="chartCanvasHumidity" height="100"></canvas>
+                  <div style="opacity:0;" class="chartTooltip center"></div>*@
+               </div>
+            </div>
+            
+         </div>
+
+         <div class="col-md-1">
+            <div class="row"></div>
+         </div>
+         
+         <div class="col-md-1 col align-self-center">
+            <div class="row"><b>School sensors</b></div>
+         </div>
+
+      </div>
+      
+      <div class="row">
+         <div class="col-sm-2 align-self-center"><Sensors_switch></Sensors_switch></div>
+         <div class="col-sm-4"><Buttons_TimeRange></Buttons_TimeRange></div>
+         <div class="col-sm-6 d-flex justify-content-center text-center"><RangePicker></RangePicker></div>
+      </div>
+
+   </div>
+
+</body>
+
+</html>

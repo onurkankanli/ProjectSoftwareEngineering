@@ -1,0 +1,50 @@
+@inject IJSRuntime _jsRuntime
+@using MudblazorWeather.Backend.DataHandling
+@using System.Security.Cryptography
+@using Microsoft.JSInterop
+@using System.Security
+@using Microsoft.VisualBasic
+@using MudblazorWeather.Graphs
+
+@code {
+    public static  List<CustomChartSeries> Series = new List<CustomChartSeries>();
+    public static  List<CustomHeatSeries> HeatSeries = new List<CustomHeatSeries>();
+    string gTitle = "SignalStrength";
+    
+    protected override async Task OnInitializedAsync()
+    {
+        CachedData.Instance.OnNewDataReceivedEvent += SetDataAndRender;
+        CachedData.Instance.OnRefreshRequiredEvent += SetDataAndRender;
+
+    //Series = await CachedData.Instance.GetChartSeries(DataType.SignalStrength);
+        HeatSeries = await CachedData.Instance.GetHeatSeries(DataType.SignalStrength);
+    }
+
+    private async void SetDataAndRender()
+    {
+        HeatSeries = await CachedData.Instance.GetHeatSeries(DataType.SignalStrength);
+
+        try //This throws an error and then proceeds to work anyway. We didnt have time to deal with it. Too bad!
+        {
+            await _jsRuntime.InvokeVoidAsync("updateHeatmap", gTitle, HeatSeries);
+            this.StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("This error makes no sense.");
+        }
+       
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        List<CustomHeatSeries> deneme = new List<CustomHeatSeries>();
+        deneme = HeatSeries;
+        
+        if (firstRender)
+        {
+            await _jsRuntime.InvokeVoidAsync("generateHeatmap", gTitle, HeatSeries);
+            this.StateHasChanged();
+        }
+    }
+}

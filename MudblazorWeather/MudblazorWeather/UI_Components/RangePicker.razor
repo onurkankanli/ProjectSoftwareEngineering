@@ -1,0 +1,26 @@
+@using MudblazorWeather.Backend.Networking
+@using MudblazorWeather.Backend.DataHandling
+
+<MudGrid>
+    <MudItem xs="12" sm="6">
+        <MudDateRangePicker MinDate="CachedData.Instance.EarliestDate" MaxDate="DateTime.Now" @ref="_picker" Label="Select the desired date" @bind-DateRange="_initialRange" DateFormat="dd/MM/yyyy">
+            <PickerActions>
+                <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Clear</MudButton>
+                <MudButton OnClick="@(() => _picker.Close(false))">Cancel</MudButton>
+                <MudButton Color="MudBlazor.Color.Primary" OnClick="@(LoadData)">Ok</MudButton>
+            </PickerActions>
+        </MudDateRangePicker>
+    </MudItem>
+</MudGrid>
+
+@code { 
+    MudDateRangePicker _picker;
+    DateRange _initialRange = new DateRange(CachedData.Instance.From, CachedData.Instance.To);
+
+    async Task LoadData()
+    {
+        _picker.Close(true);
+
+            await HttpHandler.RequestData(_picker.DateRange);
+    }
+}
